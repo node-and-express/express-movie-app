@@ -2,6 +2,10 @@
 <html>
 <head>
 	<title>	Movie App </title>
+	<!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	
 	<%- include('./head') %>
 </head>
 <body>
@@ -11,11 +15,16 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-sm-12">
-				<h1></h1>
+				<h1 class="text-center">Now Playing</h1>
 			</div>
 			<div class="col-sm-12">
-				
-				
+				<% data.forEach(function(movie){ %>
+					<div class="col-md-3 col-sm-4 poster">
+						<a href="/movie/<%= movie.id %>">
+							<img src="<%= imageBaseUrl + movie.poster_path %>" alt="" content="default-src 'self' http://api.themoviedb.org/3">
+						</a>
+					</div>
+				  <% }); %>
 			</div>
 		</div>
 	</div>
