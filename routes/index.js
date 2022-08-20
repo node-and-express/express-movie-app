@@ -1,6 +1,9 @@
 var express = require('express');
 var router = express.Router();
 
+//auth with passport
+const passport=require('passport');
+
 // Get the default instance
 const axios = require('axios')
 
@@ -23,6 +26,15 @@ router.use((req, res, next) => {
   next();
 })
 
+//actual routes start here
+
+//login with github
+router.get('/login',passport.authenticate('github'));
+router.get('/auth/:provider/callback',passport.authenticate('github',{
+  successRedirect:'/',
+  failureRedirect:'/loginFailed'
+}));
+
 router.get('/', function(req, res, next) {
   // Make the GET call by passing a config object to the instance
   axios.get(nowPlayingUrl).then(apiRes => {
@@ -34,6 +46,10 @@ router.get('/', function(req, res, next) {
   });
 
   //res.render('index', {  });
+});
+
+router.get('/favorites',(req,res)=>{
+  res.json(req.user);
 });
 
 router.get('/movie/:id',(req,res,next)=>{
