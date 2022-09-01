@@ -23,6 +23,14 @@ router.use((req,res,next) => {
 //following middleware is use to solve content policy errors in console
 router.use((req, res, next) => {
   res.set("Content-Security-Policy", "default-src *; style-src 'self' http://* 'unsafe-inline'; script-src 'self' http://* 'unsafe-inline' 'unsafe-eval'");
+
+  //and also if you are making cross-domain requests, make sure that your backend can accept these requests:
+  //for passport
+  res.header('Access-Control-Allow-Credentials', true);
+  res.header('Access-Control-Allow-Origin', req.headers.origin);
+  res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+  res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept');
+
   next();
 })
 
@@ -37,6 +45,8 @@ router.get('/auth/:provider/callback',passport.authenticate('github',{
 
 router.get('/', function(req, res, next) {
   // Make the GET call by passing a config object to the instance
+  console.log('User data please');
+  console.log(req.user);
   axios.get(nowPlayingUrl).then(apiRes => {
     // process the response
      var data = apiRes.data.results;

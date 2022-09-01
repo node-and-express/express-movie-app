@@ -46,9 +46,9 @@ app.use(session({
    secret: 'Express is my fav', 
    resave: false, 
    saveUninitialized: true,
-   cookie:{secure:true} 
+   cookie:{secure:false}  //if trure it will not return session data
   }));
-
+  
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -68,6 +68,7 @@ passport.serializeUser((user,cb)=>{
 passport.deserializeUser((user,cb)=>{
   cb(null,user);
 });
+
 
 //end passport config
 
