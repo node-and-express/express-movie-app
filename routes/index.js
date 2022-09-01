@@ -40,6 +40,8 @@ router.use((req, res, next) => {
 router.get('/login/github',passport.authenticate('github'));
 router.get('/login/facebook',passport.authenticate('facebook'));
 router.get('/login/google',passport.authenticate('google',{ scope:[ 'email', 'profile' ] }));
+router.get('/login/linkedin',passport.authenticate('linkedin',{ state: 'SOME STATE'  }));
+
 
 //callback for github
 router.get('/auth/github/callback',passport.authenticate('github',{
@@ -55,6 +57,12 @@ router.get('/auth/facebook/callback',passport.authenticate('facebook',{
 
 //callback for google auth
 router.get('/auth/google/callback',passport.authenticate('google',{
+  successRedirect:'/favorites',
+  failureRedirect:'/loginFailed'
+}));
+
+//callback for linkedin auth
+router.get('/auth/linkedin/callback',passport.authenticate('linkedin',{
   successRedirect:'/favorites',
   failureRedirect:'/loginFailed'
 }));

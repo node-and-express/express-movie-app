@@ -12,6 +12,7 @@ const passport=require('passport');
 var GitHubStrategy = require('passport-github').Strategy;
 var FacebookStrategy = require('passport-facebook').Strategy;
 var GoogleStrategy = require( 'passport-google-oauth2' ).Strategy;
+var LinkedInStrategy = require('passport-linkedin-oauth2').Strategy;
 
 
 
@@ -54,12 +55,10 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-const configGithub=require('./config.js').github; //load configurations from config
-const configFacebook=require('./config.js').facebook; //load configurations from config
-const configGoogle=require('./config.js').google; //load configurations from config
+var socialConfig=require('./config.js').socialConfig; //load configurations from config
 
 //passport strategy for github
-passport.use(new GitHubStrategy(configGithub,
+passport.use(new GitHubStrategy(socialConfig.github,
 function(accessToken, refreshToken, profile, cb) {
     //console.log(profile._json);
     //return cb(null, profile._json);
@@ -68,7 +67,7 @@ function(accessToken, refreshToken, profile, cb) {
 ));
 
 //passport strategy for facebook
-passport.use(new FacebookStrategy(configFacebook,
+passport.use(new FacebookStrategy(socialConfig.facebook,
   function(accessToken, refreshToken, profile, cb) {
       //console.log(profile._json);
       //return cb(null, profile._json);
@@ -77,7 +76,16 @@ passport.use(new FacebookStrategy(configFacebook,
   ));
 
   //passport strategy for google
-passport.use(new GoogleStrategy(configGoogle,
+passport.use(new GoogleStrategy(socialConfig.google,
+  function(accessToken, refreshToken, profile, cb) {
+      //console.log(profile._json);
+      //return cb(null, profile._json);
+      return cb(null, profile);
+    }
+  ));
+
+  //passport strategy for linkedin
+passport.use(new LinkedInStrategy(socialConfig.linkedin,
   function(accessToken, refreshToken, profile, cb) {
       //console.log(profile._json);
       //return cb(null, profile._json);
