@@ -10,6 +10,8 @@ var session=require('express-session');
 //auth with passport
 const passport=require('passport');
 var GitHubStrategy = require('passport-github').Strategy;
+var FacebookStrategy = require('passport-facebook').Strategy;
+var GoogleStrategy = require( 'passport-google-oauth2' ).Strategy;
 
 
 
@@ -52,14 +54,36 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-const passportConfig=require('./config');
-passport.use(new GitHubStrategy(passportConfig,
+const configGithub=require('./config.js').github; //load configurations from config
+const configFacebook=require('./config.js').facebook; //load configurations from config
+const configGoogle=require('./config.js').google; //load configurations from config
+
+//passport strategy for github
+passport.use(new GitHubStrategy(configGithub,
 function(accessToken, refreshToken, profile, cb) {
     //console.log(profile._json);
     //return cb(null, profile._json);
     return cb(null, profile);
   }
 ));
+
+//passport strategy for facebook
+passport.use(new FacebookStrategy(configFacebook,
+  function(accessToken, refreshToken, profile, cb) {
+      //console.log(profile._json);
+      //return cb(null, profile._json);
+      return cb(null, profile);
+    }
+  ));
+
+  //passport strategy for google
+passport.use(new GoogleStrategy(configGoogle,
+  function(accessToken, refreshToken, profile, cb) {
+      //console.log(profile._json);
+      //return cb(null, profile._json);
+      return cb(null, profile);
+    }
+  ));
 
 passport.serializeUser((user,cb)=>{
   cb(null,user);

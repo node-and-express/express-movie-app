@@ -37,16 +37,32 @@ router.use((req, res, next) => {
 //actual routes start here
 
 //login with github
-router.get('/login',passport.authenticate('github'));
-router.get('/auth/:provider/callback',passport.authenticate('github',{
-  successRedirect:'/',
+router.get('/login/github',passport.authenticate('github'));
+router.get('/login/facebook',passport.authenticate('facebook'));
+router.get('/login/google',passport.authenticate('google',{ scope:[ 'email', 'profile' ] }));
+
+//callback for github
+router.get('/auth/github/callback',passport.authenticate('github',{
+  successRedirect:'/favorites',
+  failureRedirect:'/loginFailed'
+}));
+
+//callback for facebook auth
+router.get('/auth/facebook/callback',passport.authenticate('facebook',{
+  successRedirect:'/favorites',
+  failureRedirect:'/loginFailed'
+}));
+
+//callback for google auth
+router.get('/auth/google/callback',passport.authenticate('google',{
+  successRedirect:'/favorites',
   failureRedirect:'/loginFailed'
 }));
 
 router.get('/', function(req, res, next) {
   // Make the GET call by passing a config object to the instance
-  console.log('User data please');
-  console.log(req.user);
+  //console.log('User data please');
+  //console.log(req.user);
   axios.get(nowPlayingUrl).then(apiRes => {
     // process the response
      var data = apiRes.data.results;
