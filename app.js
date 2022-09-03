@@ -55,7 +55,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-var socialConfig=require('./config.js').socialConfig; //load configurations from config
+var socialConfig=require('./config/config.js').socialConfig; //load configurations from config
 
 //passport strategy for github
 passport.use(new GitHubStrategy(socialConfig.github,
