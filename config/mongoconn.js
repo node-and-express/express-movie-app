@@ -31,7 +31,7 @@ const getByName=async (req,res)=>{
   res.json(result);
 };
 
-//get employee by name
+//create employee record
 const createEmp=async (req,res)=>{
   let empName=req.body.name;
   let empCity=req.body.city;
